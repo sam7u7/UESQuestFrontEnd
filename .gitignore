@@ -1,13 +1,21 @@
-# dependencies
+# node modules
 node_modules/
 
-# production
+# build output
 dist/
 build/
 
-# misc
+# dotenv environment variables
 .env*
-.DS_Store
-.vscode/
+!.env.example
+
+# logs
 *.log
-*.local
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
