@@ -1,6 +1,5 @@
-// src/pages/Login.jsx
-
 import { useState } from 'react';
+
 import axiosClient from '../axiosClient';
 
 export default function Login({ onLoginSuccess }) {
@@ -13,11 +12,28 @@ export default function Login({ onLoginSuccess }) {
     setError('');
 
     try {
-      await axiosClient.get('/sanctum/csrf-cookie');
+      // Realizar la autenticación y obtener el token
       const response = await axiosClient.post('/api/login', { correo, password });
-  
-      axiosClient.get('/api/user');
-      onLoginSuccess && onLoginSuccess(response.data);
+
+      const token = response.data.token;
+      
+      if (!token) {
+        setError('No se recibió un token válido');
+        return;
+      }
+
+      // Guardar el token en localStorage
+      localStorage.setItem('authToken', token);
+
+      // Configurar el token para futuras solicitudes en Axios
+      axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      // Obtener información del usuario autenticado
+      const userResponse = await axiosClient.get('/api/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      onLoginSuccess && onLoginSuccess(userResponse.data);
     } catch (err) {
       console.error(err);
       setError('Credenciales inválidas');
