@@ -8,7 +8,7 @@ import CrearEncuesta from './pages/CrearEncuesta'; // Importa el componente Crea
 import PreguntasBase from './pages/PreguntasBase';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-
+import GrupoMeta from './components/GrupoMeta';
 
 // ==============================================================
 // DEFINE TODOS TUS COMPONENTES DE EJEMPLO AQUÍ ARRIBA
@@ -90,6 +90,7 @@ function App() {
               <Route path="/crear-encuesta/preguntas" element={<PreguntasBase />} />
               <Route path="/mis-encuestas" element={<MySurveysPage />} />
               <Route path="/roles" element={<RolesManagementPage />} />
+              <Route path="/grupo-meta" element={<GrupoMeta />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
             </Routes>
           </main>
