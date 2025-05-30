@@ -5,9 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RolesManagementPage from './pages/RolesManagementPage';
 import Login from './pages/LoginPage';
 import CrearEncuesta from './pages/CrearEncuesta'; // Importa el componente CrearEncuesta
-
+import PreguntasBase from './pages/PreguntasBase';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+
 
 // ==============================================================
 // DEFINE TODOS TUS COMPONENTES DE EJEMPLO AQUÍ ARRIBA
@@ -85,7 +86,8 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/quienes-somos" element={<AboutUsPage />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/crear-encuesta" element={<CrearEncuesta />} /> 
+              <Route path="/crear-encuesta" element={<CrearEncuesta />} />
+              <Route path="/crear-encuesta/preguntas" element={<PreguntasBase />} />
               <Route path="/mis-encuestas" element={<MySurveysPage />} />
               <Route path="/roles" element={<RolesManagementPage />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
