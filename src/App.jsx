@@ -7,10 +7,6 @@ import Login from './pages/LoginPage'; './pages/LoginPage';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
-// ==============================================================
-// DEFINE TODOS TUS COMPONENTES DE EJEMPLO AQUÍ ARRIBA
-// (Asegúrate de que estén definidos para evitar ReferenceError)
-// ==============================================================
 const HomePage = () => (
   <div className="text-center py-20">
     <h1 className="text-4xl font-bold mb-4">Bienvenido a UESQuest</h1>
