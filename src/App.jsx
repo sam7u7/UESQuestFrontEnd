@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import RolesManagementPage from './pages/RolesManagementPage';
-import Login from './pages/LoginPage'; './pages/LoginPage';
+import Login from './pages/LoginPage';
+import CrearEncuesta from './pages/CrearEncuesta'; // Importa el componente CrearEncuesta
+
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
+// ==============================================================
+// DEFINE TODOS TUS COMPONENTES DE EJEMPLO AQUÍ ARRIBA
+// (Asegúrate de que estén definidos para evitar ReferenceError)
+// ==============================================================
 const HomePage = () => (
   <div className="text-center py-20">
     <h1 className="text-4xl font-bold mb-4">Bienvenido a UESQuest</h1>
@@ -37,14 +43,7 @@ const LoginPage = () => (
     </div>
 );
 
-const CreateSurveyPage = () => (
-    <div className="text-center py-20">
-      <h1 className="text-4xl font-bold mb-4">Crear Encuesta</h1>
-      <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-        Aquí se diseñarán tus encuestas.
-      </p>
-    </div>
-);
+
 
 const MySurveysPage = () => (
     <div className="text-center py-20">
@@ -86,7 +85,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/quienes-somos" element={<AboutUsPage />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/crear-encuesta" element={<CreateSurveyPage />} />
+              <Route path="/crear-encuesta" element={<CrearEncuesta />} /> 
               <Route path="/mis-encuestas" element={<MySurveysPage />} />
               <Route path="/roles" element={<RolesManagementPage />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
