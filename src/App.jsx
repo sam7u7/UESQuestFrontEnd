@@ -9,7 +9,7 @@ import PreguntasBase from './pages/PreguntasBase';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import GrupoMetaPage from './pages/GrupoMetaPage';
-import UsuariosPage from './pages/UsuariosPage';
+import RegistroUsuarioNuevoPage from './pages/RegistroUsuarioNuevoPage';
 import GrupoUsuarioPage from './pages/GrupoUsuarioPage';
 
 
@@ -94,7 +94,7 @@ function App() {
               <Route path="/mis-encuestas" element={<MySurveysPage />} />
               <Route path="/roles" element={<RolesManagementPage />} />
               <Route path="/grupo-meta" element={<GrupoMetaPage />} />
-              <Route path="/usuarios" element={<UsuariosPage />} />
+              <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />
               <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
             </Routes>
