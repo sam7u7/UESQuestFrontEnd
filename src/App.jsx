@@ -9,7 +9,10 @@ import CrearEncuesta from './pages/CrearEncuesta'; // Importa el componente Crea
 import PreguntasBase from './pages/PreguntasBase';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import GrupoMeta from './components/GrupoMeta';
+import GrupoMetaPage from './pages/GrupoMetaPage';
+import RegistroUsuarioNuevoPage from './pages/RegistroUsuarioNuevoPage';
+import GrupoUsuarioPage from './pages/GrupoUsuarioPage';
+
 
 // ==============================================================
 // DEFINE TODOS TUS COMPONENTES DE EJEMPLO AQUÍ ARRIBA
@@ -93,6 +96,9 @@ function App() {
               <Route path="/roles" element={<RolesManagementPage />} />
               <Route path="/grupo-meta" element={<GrupoMeta />} />
               <Route path='/usuario' element={<Usuario/>}/>
+              <Route path="/grupo-meta" element={<GrupoMetaPage />} />
+              <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />
+              <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
             </Routes>
           </main>
