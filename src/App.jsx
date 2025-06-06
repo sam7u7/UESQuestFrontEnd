@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import RolesManagementPage from './pages/RolesManagementPage';
+import Usuario from './pages/usuario';
 import Login from './pages/LoginPage';
 import CrearEncuesta from './pages/CrearEncuesta'; // Importa el componente CrearEncuesta
 import PreguntasBase from './pages/PreguntasBase';
@@ -94,6 +95,8 @@ function App() {
               <Route path="/crear-encuesta/preguntas" element={<PreguntasBase />} />
               <Route path="/mis-encuestas" element={<MySurveysPage />} />
               <Route path="/roles" element={<RolesManagementPage />} />
+              <Route path="/grupo-meta" element={<GrupoMeta />} />
+              <Route path='/usuario' element={<Usuario/>}/>
               <Route path="/grupo-meta" element={<GrupoMetaPage />} />
               <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />
               <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
