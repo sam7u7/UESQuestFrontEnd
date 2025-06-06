@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar';
 import GrupoMetaPage from './pages/GrupoMetaPage';
 import RegistroUsuarioNuevoPage from './pages/RegistroUsuarioNuevoPage';
 import GrupoUsuarioPage from './pages/GrupoUsuarioPage';
+import PreguntaBaseManagementPage from './pages/PreguntaBaseManagementPage';
 
 
 // ==============================================================
@@ -96,6 +97,7 @@ function App() {
               <Route path="/grupo-meta" element={<GrupoMetaPage />} />
               <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />
               <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
+              <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />
               <Route path="*" element={<div className="text-center py-20"><h1>404 - Página no encontrada</h1><p>Verifica la URL.</p></div>} />
             </Routes>
           </main>
