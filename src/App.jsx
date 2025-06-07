@@ -23,6 +23,7 @@ import Sidebar from './components/Sidebar';
 import GrupoMetaPage from './pages/GrupoMetaPage';
 import RegistroUsuarioNuevoPage from './pages/RegistroUsuarioNuevoPage';
 import GrupoUsuarioPage from './pages/GrupoUsuarioPage';
+import PreguntaBaseManagementPage from './pages/PreguntaBaseManagementPage';
 
 // Componentes para páginas de error/acceso denegado
 import UnauthorizedPage from './pages/UnauthorizedPage'; // Asegúrate de crear este componente
@@ -99,6 +100,7 @@ function App() {
                   <Route path="/roles" element={<RolesManagementPage />} />
                   <Route path="/grupo-meta" element={<GrupoMetaPage />} />
                   <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
+              <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />
                 </Route>
 
                 {/* ============================================================== */}
