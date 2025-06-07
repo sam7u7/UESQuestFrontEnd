@@ -24,7 +24,7 @@ function Button({ children, variant = 'primary', ...props }) {
   } else if (variant === 'danger') {
     // Opcional: un botón para acciones destructivas (aunque es gris, el color rojo implicaría un cambio de paleta)
     // Por ahora, lo dejaremos como un gris muy oscuro para la acción peligrosa.
-    variantClasses = 'bg-gray-800 text-white hover:bg-gray-800 focus:ring-gray-400';
+    variantClasses = 'bg-gray-800 text-white hover:bg-gray-800 focus:ring-red-400';
   }
 
   return (
