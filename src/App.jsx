@@ -14,7 +14,7 @@ import Login from './pages/LoginPage'; // Tu componente LoginPage real
 import CrearEncuesta from './pages/GestionarEncuesta.jsx';
 import PreguntasBase from './pages/PreguntasBase';
 import Encuestas from './pages/Encuestas'; // Tu componente Encuestas (Mis Encuestas)
-
+import EncuestaResponder from './pages/encuestaResponder.jsx';
 // Componentes de la interfaz de usuario (Header, Sidebar)
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -29,6 +29,8 @@ import PreguntaBaseManagementPage from './pages/PreguntaBaseManagementPage';
 import UnauthorizedPage from './pages/UnauthorizedPage'; // Asegúrate de crear este componente
 import NotFoundPage from './pages/NotFoundPage'; // Asegúrate de crear este componente
 
+import PreguntasEncuesta from './pages/PreguntasEncuesta.jsx';
+import EncuestasDisponibles from './pages/EncuestasDisponibles.jsx';
 // ==============================================================
 // Componentes de ejemplo (están bien aquí, solo para ilustrar)
 // ==============================================================
@@ -101,6 +103,11 @@ function App() {
                   <Route path="/grupo-meta" element={<GrupoMetaPage />} />
                   <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
               <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />
+              // En tu archivo de rutas principal (App.jsx o similar)
+                  <Route path="/encuestas/:id/preguntas" element={<PreguntasEncuesta />} /> 
+                  <Route path='/encuestas/diponibles' element={<EncuestasDisponibles/>}/>
+                  <Route path="/responder-encuesta/:idRealizaEncuesta" element={<EncuestaResponder />} />
+                  
                 </Route>
 
                 {/* ============================================================== */}

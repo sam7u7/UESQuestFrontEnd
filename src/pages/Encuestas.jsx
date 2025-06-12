@@ -10,7 +10,7 @@ const Encuestas = () => {
   const [encuestas, setEncuestas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const { hasRole } = useAuth(); // No necesitas 'user' aquí directamente, solo 'hasRole'
+  const { hasRole } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,36 +56,29 @@ const Encuestas = () => {
     setSearchTerm(e.target.value);
   };
 
-  // --- Nueva función para calcular la duración ---
   const calcularDuracionEnDias = (fechaInicioStr, fechaFinStr) => {
     if (!fechaInicioStr || !fechaFinStr) {
-      return "N/A"; // Si alguna fecha no existe, no se puede calcular
+      return "N/A";
     }
 
     const inicio = new Date(fechaInicioStr);
     const fin = new Date(fechaFinStr);
 
-    // Asegúrate de que las fechas sean válidas
     if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) {
       return "Fecha inválida";
     }
 
-    // Calcular la diferencia en milisegundos
     const diferenciaMilisegundos = fin.getTime() - inicio.getTime();
 
-    // Si la fecha de fin es anterior a la de inicio, la duración es 0 o un mensaje de error
     if (diferenciaMilisegundos < 0) {
       return "0 días (fechas invertidas)";
     }
 
-    // Convertir milisegundos a días
     const unDiaEnMilisegundos = 1000 * 60 * 60 * 24;
     const duracionEnDias = diferenciaMilisegundos / unDiaEnMilisegundos;
 
-    // Redondea hacia abajo para obtener días completos, por ejemplo, 1.5 días sería 1 día.
     return `${Math.floor(duracionEnDias)} días`;
   };
-  // --- Fin de la nueva función ---
 
   const filteredEncuestas = encuestas.filter(encuesta =>
     encuesta.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -129,7 +122,7 @@ const Encuestas = () => {
                 <th className="py-3 px-6 text-left">Objetivo</th>
                 <th className="py-3 px-6 text-left">Indicación</th>
                 <th className="py-3 px-6 text-left">Creado Por</th>
-                <th className="py-3 px-6 text-left">Duración</th> {/* <-- Aquí está la nueva columna */}
+                <th className="py-3 px-6 text-left">Duración</th>
                 <th className="py-3 px-6 text-center">Acciones</th>
               </tr>
             </thead>
@@ -155,11 +148,9 @@ const Encuestas = () => {
                     <td className="py-3 px-6 text-left">
                       {encuesta.created_by}
                     </td>
-                    {/* --- Mostrar la duración aquí --- */}
                     <td className="py-3 px-6 text-left">
                       {calcularDuracionEnDias(encuesta.fecha_inicio, encuesta.fecha_fin)}
                     </td>
-                    {/* --- Fin de mostrar la duración --- */}
                     <td className="py-3 px-6 text-center">
                       <div className="flex item-center justify-center space-x-2">
                         {hasRole('admin') && (
@@ -178,6 +169,13 @@ const Encuestas = () => {
                             >
                               Eliminar
                             </Button>
+                            <Button
+                              type='button'
+                              variant='primary'
+                              onClick={() => navigate(`/encuestas/${encuesta.id}/preguntas`)}
+                            >
+                              Preguntas
+                            </Button>
                           </>
                         )}
                       </div>
@@ -186,7 +184,7 @@ const Encuestas = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" className="py-4 text-center text-gray-500"> {/* Ajusta el colspan */}
+                  <td colSpan="8" className="py-4 text-center text-gray-500">
                     No se encontraron encuestas.
                   </td>
                 </tr>

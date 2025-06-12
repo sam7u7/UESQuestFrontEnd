@@ -59,6 +59,11 @@ function Sidebar({ isOpen, onClose }) {
                 Gestión de Usuarios
               </Link>
             </li>
+            <li>
+              <Link to="/encuestas/diponibles" onClick={onClose} className="block px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                Encuestas Disponibles
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>
