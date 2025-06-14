@@ -31,6 +31,11 @@ import NotFoundPage from './pages/NotFoundPage'; // Asegúrate de crear este com
 
 import PreguntasEncuesta from './pages/PreguntasEncuesta.jsx';
 import EncuestasDisponibles from './pages/EncuestasDisponibles.jsx';
+//graficos 
+import PieChartView from './pages/PieChartView.jsx';
+import BarChartView from './pages/BarChartView.jsx';
+import LineChartView from './pages/LineChartView.jsx';
+
 // ==============================================================
 // Componentes de ejemplo (están bien aquí, solo para ilustrar)
 // ==============================================================
@@ -91,6 +96,10 @@ function App() {
                 <Route path="/login" element={<Login />} /> {/* Tu componente Login real */}
                 <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />
                 <Route path="/unauthorized" element={<UnauthorizedPage />} /> {/* Página de acceso denegado */}
+                {/*rutas para graficos  */}
+                <Route path='/graficaPie/:id' element={<PieChartView/>}/>
+                <Route path='/graficaLine/:id' element={<LineChartView/>}/>
+                <Route path='/graficaBar/:id' element={<BarChartView/>}/>
 
                 {/* ============================================================== */}
                 {/* Rutas Protegidas (Requiere autenticación, pero no rol específico) */}
@@ -102,8 +111,8 @@ function App() {
                   <Route path="/roles" element={<RolesManagementPage />} />
                   <Route path="/grupo-meta" element={<GrupoMetaPage />} />
                   <Route path="/grupo-usuario" element={<GrupoUsuarioPage />} />
-              <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />
-              // En tu archivo de rutas principal (App.jsx o similar)
+                  <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />
+                  // En tu archivo de rutas principal (App.jsx o similar)
                   <Route path="/encuestas/:id/preguntas" element={<PreguntasEncuesta />} /> 
                   <Route path='/encuestas/diponibles' element={<EncuestasDisponibles/>}/>
                   <Route path="/responder-encuesta/:idRealizaEncuesta" element={<EncuestaResponder />} />
