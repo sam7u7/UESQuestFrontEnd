@@ -160,8 +160,9 @@ function Sidebar({ isOpen, onClose }) {
                   {/* Visible para 'admin' y 'usuario' */}
                   {(hasRole('admin') || hasRole('usuario')) && <MenuItem to="/usuario-nuevo" label="Mi Usuario" />}
                   {/* Solo visible para 'admin' */}
-                  {hasRole('admin') && <MenuItem to="/usuario" label="Gestión de Usuarios" />}
                   {hasRole('admin') && <MenuItem to="/roles" label="Gestión de Roles" />}
+                  {hasRole('admin') && <MenuItem to="/usuario" label="Gestión de Usuarios" />}                  
+                  {hasRole('admin') && <MenuItem to="/usuarios/estado" label="Estado de Usuarios" />}
                 </ul>
               </div>
             </li>

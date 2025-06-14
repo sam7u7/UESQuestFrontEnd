@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Importa tus componentes de página
 import RolesManagementPage from './pages/RolesManagementPage';
 import Usuario from './pages/usuario';
+import EstadoUsuariosPage from './pages/EstadoUsuariosPage';
 import Login from './pages/LoginPage';
 import CrearEncuesta from './pages/GestionarEncuesta.jsx';
 import PreguntasBase from './pages/PreguntasBase';
@@ -38,6 +39,7 @@ import BarChartView from './pages/BarChartView.jsx';
 import LineChartView from './pages/LineChartView.jsx';
 
 import QuienesSomosPage from './pages/QuienesSomosPage.jsx';
+
 
 
 // ==============================================================
@@ -134,6 +136,7 @@ function App() {
                 <Route path="/encuestas/:id/edit" element={<CrearEncuesta />} />
                 <Route path="/roles" element={<RolesManagementPage />} />
                 <Route path='/usuario' element={<Usuario/>}/>
+                <Route path="/usuarios/estado" element={<EstadoUsuariosPage />} />
                 
                 
                 
