@@ -15,7 +15,7 @@ const EncuestasDisponibles = () => {
     const fetchEncuestas = async () => {
       try {
         setLoading(true);
-        const res = await axiosClient.get('/api/encuestas');
+        const res = await axiosClient.get('/api/mis-encuestas');
         setEncuestas(res.data.data || res.data || []);
       } catch (err) {
         setError('Error al cargar encuestas');

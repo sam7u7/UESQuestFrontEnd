@@ -12,6 +12,7 @@ function GrupoMeta() {
   const [descripcionGrupo, setDescripcionGrupo] = useState('');
   const [editId, setEditId] = useState(null);
   const [alert, setAlert] = useState({ message: '', type: '' });
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
   const getAuthHeader = () => {
@@ -19,7 +20,7 @@ function GrupoMeta() {
     if (!token) {
       setAlert({ message: 'No estás autenticado.', type: 'error' });
       navigate('/login');
-      return {};
+      return null;
     }
 
     return {
@@ -31,9 +32,12 @@ function GrupoMeta() {
   };
 
   const fetchGrupos = () => {
-    axiosClient.get('/api/grupoMeta', getAuthHeader())
-      .then(res => setGrupos(res.data))
-      .catch(err => setAlert({ message: 'Error al cargar grupos.', type: 'error' }));
+    const headers = getAuthHeader();
+    if (!headers) return;
+
+    axiosClient.get('/api/grupoMeta', headers)
+      .then(res => setGrupos(res.data.data || res.data))
+      .catch(() => setAlert({ message: 'Error al cargar grupos.', type: 'error' }));
   };
 
   useEffect(() => {
@@ -42,11 +46,18 @@ function GrupoMeta() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { nombre_grupo: nombreGrupo, descripcion_grupo: descripcionGrupo, created_by: 1 };
+    const headers = getAuthHeader();
+    if (!headers) return;
+
+    const data = {
+      nombre_grupo: nombreGrupo,
+      descripcion_grupo: descripcionGrupo,
+      created_by: 1,
+    };
 
     const request = editId
-      ? axiosClient.put(`/api/grupoMeta/${editId}`, data, getAuthHeader())
-      : axiosClient.post('/api/grupoMeta', data, getAuthHeader());
+      ? axiosClient.put(`/api/grupoMeta/${editId}`, data, headers)
+      : axiosClient.post('/api/grupoMeta', data, headers);
 
     request
       .then(() => {
@@ -64,7 +75,10 @@ function GrupoMeta() {
   const handleDelete = (id) => {
     if (!window.confirm('¿Eliminar este grupo?')) return;
 
-    axiosClient.delete(`/api/grupoMeta/${id}`, getAuthHeader())
+    const headers = getAuthHeader();
+    if (!headers) return;
+
+    axiosClient.delete(`/api/grupoMeta/${id}`, headers)
       .then(() => {
         fetchGrupos();
         setAlert({ message: 'Grupo eliminado.', type: 'success' });
@@ -81,12 +95,16 @@ function GrupoMeta() {
     setAlert({ message: 'Editando grupo...', type: 'info' });
   };
 
+  const gruposFiltrados = grupos.filter((grupo) =>
+    grupo.nombre_grupo.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card title="Gestión de Grupo Meta">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <Card title="Gestión de Grupo Meta" className="w-full max-w-4xl">
         {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             label="Nombre del Grupo"
             value={nombreGrupo}
@@ -98,28 +116,56 @@ function GrupoMeta() {
             value={descripcionGrupo}
             onChange={(e) => setDescripcionGrupo(e.target.value)}
           />
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" className="w-full sm:w-auto">
             {editId ? 'Actualizar' : 'Crear'}
           </Button>
         </form>
 
-        <ul className="mt-6 space-y-4">
-          {grupos.map((grupo) => (
-            <li key={grupo.id} className="p-4 bg-white shadow rounded flex justify-between items-center">
-              <div>
-                <h3 className="font-bold">{grupo.nombre_grupo}</h3>
-                <p>{grupo.descripcion_grupo}</p>
-              </div>
-              <div className="space-x-2">
-                <Button onClick={() => handleEdit(grupo)}>Editar</Button>
-                <Button onClick={() => handleDelete(grupo.id)} variant="danger">Eliminar</Button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-6">
+          <InputField
+            label="Buscar Grupo por Nombre"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar..."
+          />
+        </div>
+
+        <div className="mt-6 w-full overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200 rounded shadow-sm text-sm sm:text-base">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="text-left px-3 py-2 border font-normal text-gray-700">Nombre del Grupo</th>
+                <th className="text-left px-3 py-2 border font-normal text-gray-700">Descripción</th>
+                <th className="text-left px-3 py-2 border font-normal text-gray-700">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gruposFiltrados.length > 0 ? (
+                gruposFiltrados.map((grupo) => (
+                  <tr key={grupo.id} className="border-t hover:bg-gray-50">
+                    <td className="px-3 py-2 border break-words max-w-xs">{grupo.nombre_grupo}</td>
+                    <td className="px-3 py-2 border break-words max-w-xs">{grupo.descripcion_grupo}</td>
+                    <td className="px-3 py-2 border space-x-2">
+                      <Button size="sm" onClick={() => handleEdit(grupo)}>Editar</Button>
+                      <Button size="sm" variant="danger" onClick={() => handleDelete(grupo.id)}>Eliminar</Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="text-center px-3 py-4 text-gray-500">
+                    No se encontraron grupos.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </div>
   );
 }
 
 export default GrupoMeta;
+
+
