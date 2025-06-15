@@ -67,7 +67,7 @@ function Sidebar({ isOpen, onClose }) {
                 onClick={() => handleMenuToggle('encuestas')}
                 className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
               >
-                Gestión de Encuestas
+                Encuestas
                 <svg
                   className={`h-5 w-5 transition-transform ${openMenu === 'encuestas' ? 'rotate-90' : ''}`}
                   viewBox="0 0 20 20"
@@ -87,7 +87,7 @@ function Sidebar({ isOpen, onClose }) {
               >
                 <ul className="ml-2">
                   {/* Solo visible para 'admin' */}
-                  {hasRole('admin') && <MenuItem to="/crear-encuesta" label="Crear Encuesta" />}
+                  {hasRole('admin') && <MenuItem to="/mis-encuestas" label="Gestionar Emcuestas" />}
                   {/* Visible para 'admin' y 'usuario' */}
                   {(hasRole('admin') || hasRole('usuario')) && <MenuItem to="/encuestas/diponibles" label="Encuestas Disponibles" />}
                 </ul>
