@@ -93,7 +93,7 @@ const EncuestaResponder = () => {
       });
 
       await axiosClient.post('/api/respuestasUsuario', payload);
-      navigate('/');
+      navigate('/home');
     } catch (err) {
       console.error('Error al enviar respuestas:', err);
       setError('Error al enviar respuestas.');

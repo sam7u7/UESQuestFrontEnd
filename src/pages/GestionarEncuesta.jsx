@@ -4,6 +4,9 @@ import Button from '../components/Button.jsx';
 import Input from '../components/InputField.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useParams, useNavigate } from 'react-router-dom'; // Importa useParams y useNavigate
+import ErrorMenssage from '../components/ErrorMessage.jsx'
+import LoadingSpin from '../components/LoadingSpinner.jsx'
+import NotFound from '../components/NoDataFound.jsx'
 
 // Componente para crear y editar encuestas
 const GestionarEncuesta = () => { // Considera renombrar el componente
@@ -113,6 +116,9 @@ const GestionarEncuesta = () => { // Considera renombrar el componente
       setLoading(false);
     }
   };
+  if (loading) {
+    return <LoadingSpin />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
