@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const axiosClient = axios.create({
   baseURL: 'https://uesquest-production.up.railway.app/', //Ruta cuando se corre laravel 
-  
+  //baseURL: 'http://127.0.0.1:8000/',
 });
 
 axiosClient.interceptors.request.use((config) => {
