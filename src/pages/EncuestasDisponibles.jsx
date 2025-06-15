@@ -3,6 +3,9 @@ import axiosClient from '../axiosClient';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import ErrorMenssage from '../components/ErrorMessage.jsx'
+import LoadingSpin from '../components/LoadingSpinner.jsx'
+import NotFound from '../components/NoDataFound.jsx'
 
 const EncuestasDisponibles = () => {
   const { user } = useAuth();
@@ -63,7 +66,9 @@ const EncuestasDisponibles = () => {
     if (!fecha) return 'Sin fecha límite';
     return new Date(fecha).toLocaleDateString();
   };
-
+   if (loading) {
+    return <LoadingSpin />;
+  }
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Encuestas Disponibles</h1>
