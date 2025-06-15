@@ -1,35 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para la redirección
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosClient from '../axiosClient';
+import { useAuth } from '../context/AuthContext'; // Importa el contexto
 
-export default function Login({ onLoginSuccess }) {
+export default function Login() {
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
-  const [message, setMessage] = useState(''); // Para mensajes de éxito o información
+  const [message, setMessage] = useState('');
 
-  const navigate = useNavigate(); // Hook para la navegación
-
-  // Efecto para redirigir después de un inicio de sesión exitoso
-  useEffect(() => {
-    if (onLoginSuccess) {
-      // onLoginSuccess debería ser una función que se llama cuando el login es exitoso
-      // y que en el componente padre, por ejemplo, actualiza el estado de autenticación.
-      // Aquí, asumimos que si onLoginSuccess se ejecuta, la redirección a /home es deseada.
-      // Podrías pasar el usuario autenticado a onLoginSuccess para que el padre lo maneje.
-    }
-  }, [onLoginSuccess]);
+  const navigate = useNavigate();
+  const { login } = useAuth(); // Usamos la función login del contexto
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    setMessage(''); // Limpiar mensajes previos
+    setMessage('');
 
     try {
       const response = await axiosClient.post('/api/login', { correo, password });
-
       const token = response.data.token;
 
       if (!token) {
@@ -37,20 +28,10 @@ export default function Login({ onLoginSuccess }) {
         return;
       }
 
-      localStorage.setItem('authToken', token);
-      axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Guardar token y obtener usuario desde contexto
+      await login(token);
 
-      // Obtener información del usuario autenticado
-      const userResponse = await axiosClient.get('/api/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      // Llama a la función onLoginSuccess pasada por el padre
-      // y luego redirige a la página de inicio.
-      if (onLoginSuccess) {
-        onLoginSuccess(userResponse.data);
-      }
-      navigate('/home'); // Redirige a la página de inicio
+      navigate('/home');
     } catch (err) {
       console.error('Error de inicio de sesión:', err);
       if (err.response && err.response.data) {
@@ -58,8 +39,10 @@ export default function Login({ onLoginSuccess }) {
         if (backendError === 'Cuenta bloqueada. Se ha enviado una nueva contraseña a su correo.') {
           setError(backendError);
           setMessage('Por favor, revise su correo electrónico para la nueva contraseña.');
-        } else if (backendError === 'Credenciales inválidas. Intentos restantes: 2' ||
-                   backendError === 'Credenciales inválidas. Intentos restantes: 1') {
+        } else if (
+          backendError === 'Credenciales inválidas. Intentos restantes: 2' ||
+          backendError === 'Credenciales inválidas. Intentos restantes: 1'
+        ) {
           setError(backendError);
         } else {
           setError('Credenciales inválidas');
@@ -73,14 +56,13 @@ export default function Login({ onLoginSuccess }) {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setError('');
-    setMessage(''); // Limpiar mensajes previos
+    setMessage('');
 
     try {
-      // Llama a la nueva ruta de Laravel para restablecer la contraseña
       await axiosClient.post('/api/forgot-password', { correo: forgotPasswordEmail });
       setMessage('Si su correo está registrado, recibirá una contraseña provisional en su bandeja de entrada.');
-      setShowForgotPasswordForm(false); // Ocultar el formulario después de enviar
-      setForgotPasswordEmail(''); // Limpiar el campo
+      setShowForgotPasswordForm(false);
+      setForgotPasswordEmail('');
     } catch (err) {
       console.error('Error al solicitar restablecimiento de contraseña:', err);
       setError('Error al procesar su solicitud. Por favor, intente de nuevo.');
@@ -158,3 +140,4 @@ export default function Login({ onLoginSuccess }) {
     </div>
   );
 }
+
