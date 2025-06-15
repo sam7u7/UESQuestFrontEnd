@@ -214,35 +214,35 @@ function GrupoUsuarioPage() {
           <p>No hay relaciones disponibles.</p>
         ) : (
           <table className="w-full border-collapse mt-4">
-            <thead>
-              <tr>
-                <th className="border p-2 text-left">Grupo Meta</th>
-                <th className="border p-2 text-left">Usuario</th>
-                <th className="border p-2 text-left">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredGrupoUsuarios.map((item) => {
-                const grupo = grupos.find(g => g.id === item.grupo_id);
-                const usuario = usuarios.find(u => u.id === item.usuario_id);
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="border p-2 text-left font-normal text-gray-700">Grupo Meta</th>
+                  <th className="border p-2 text-left font-normal text-gray-700">Usuario</th>
+                  <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredGrupoUsuarios.map((item) => {
+                  const grupo = grupos.find(g => g.id === item.grupo_id);
+                  const usuario = usuarios.find(u => u.id === item.usuario_id);
 
-                return (
-                  <tr key={item.id}>
-                    <td className="border p-2">
-                      {grupo ? grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo : 'N/D'}
-                    </td>
-                    <td className="border p-2">
-                      {usuario ? usuario.nombre + ' ' + usuario.apellido : 'N/D'}
-                    </td>
-                    <td className="border p-2 space-x-2">
-                      <Button onClick={() => handleEdit(item)}>Editar</Button>
-                      <Button onClick={() => handleDelete(item.id)}>Eliminar</Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <tr key={item.id} className="hover:bg-gray-50 border-t">
+                      <td className="border p-2">
+                        {grupo ? grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo : 'N/D'}
+                      </td>
+                      <td className="border p-2">
+                        {usuario ? usuario.nombre + ' ' + usuario.apellido : 'N/D'}
+                      </td>
+                      <td className="border p-2 space-x-2">
+                        <Button onClick={() => handleEdit(item)}>Editar</Button>
+                        <Button onClick={() => handleDelete(item.id)}>Eliminar</Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
         )}
       </Card>
     </div>

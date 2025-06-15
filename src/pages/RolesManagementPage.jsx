@@ -145,15 +145,18 @@ function RolesManagementPage() {
         {!isLoading && filteredRoles.length === 0 ? (
           <p>No hay roles disponibles.</p>
         ) : (
-          <table>
-            <thead>
-              <tr><th>Nombre</th><th>Acciones</th></tr>
+          <table className="w-full border-collapse mt-4">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border p-2 text-left font-normal text-gray-700">Nombre</th>
+                <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
+              </tr>
             </thead>
             <tbody>
               {filteredRoles.map(role => (
-                <tr key={role.id}>
-                  <td>{role.nombre_rol}</td>
-                  <td>
+                <tr key={role.id} className="hover:bg-gray-50 border-t">
+                  <td className="border p-2">{role.nombre_rol}</td>
+                  <td className="border p-2 space-x-2">
                     <Button onClick={() => handleEdit(role)}>Editar</Button>
                     <Button onClick={() => handleDelete(role.id)}>Eliminar</Button>
                   </td>
