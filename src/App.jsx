@@ -14,7 +14,7 @@ import Login from './pages/LoginPage';
 import CrearEncuesta from './pages/GestionarEncuesta.jsx';
 import PreguntasBase from './pages/PreguntasBase';
 import Encuestas from './pages/Encuestas';
-import EncuestaResponder from './pages/encuestaResponder.jsx';
+import EncuestaResponder from './pages/EncuestaResponder.jsx';
 
 // Componentes de la interfaz de usuario (Header, Sidebar)
 import Header from './components/Header';

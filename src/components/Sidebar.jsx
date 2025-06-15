@@ -73,7 +73,7 @@ function Sidebar({ isOpen, onClose }) {
                 aria-controls="submenu-encuestas"
                 className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none"
               >
-                Gestión de Encuestas
+                Encuestas
                 <svg
                   className={`h-5 w-5 transition-transform ${
                     openMenu === 'encuestas' ? 'rotate-90' : ''
@@ -96,10 +96,10 @@ function Sidebar({ isOpen, onClose }) {
                 }`}
               >
                 <ul className="ml-2">
-                  {isAdmin && <MenuItem to="/crear-encuesta" label="Crear Encuesta" />}
-                  {(isAdmin || isUsuario) && (
-                    <MenuItem to="/encuestas/diponibles" label="Encuestas Disponibles" />
-                  )}
+                  {/* Solo visible para 'admin' */}
+                  {hasRole('admin') && <MenuItem to="/crear-encuesta" label="Crear Encuesta" />}
+                  {/* Visible para 'admin' y 'usuario' */}
+                  {(hasRole('admin') || hasRole('usuario')) && <MenuItem to="/encuestas/diponibles" label="Encuestas Disponibles" />}
                 </ul>
               </div>
             </li>

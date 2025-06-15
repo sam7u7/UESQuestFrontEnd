@@ -9,6 +9,7 @@ import RadioInput from '../components/RadioInput';
 import TextAreaField from '../components/TextAreaField';
 import PaginationControls from '../components/PaginationControls';
 import AlertMessage from '../components/AlertMessage';
+import { useAuth } from '../context/AuthContext.jsx';
 
 function HomePage() {
   // Mantén todos los estados y funciones lógicas que pertenecen al home aquí
@@ -16,7 +17,7 @@ function HomePage() {
   const [newsletter, setNewsletter] = useState(true);
   const [feedbackOption, setFeedbackOption] = useState('excelente');
   const [longAnswer, setLongAnswer] = useState('');
-
+  const { hasRole } = useAuth();
   const [currentSurveyPage, setCurrentSurveyPage] = useState(1);
   const totalSurveyPages = 3;
 
