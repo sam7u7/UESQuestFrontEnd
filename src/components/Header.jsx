@@ -80,10 +80,13 @@ function Header({ onToggleSidebar, isSidebarOpen }) {
         </div>
 
         {/* Logo */}
-        <div className="flex-grow text-center lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:flex-grow-0 lg:text-left">
-          <Link to="/home" className="text-lg sm:text-2xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
-            UESQuest
+        <div className="flex-grow text-center lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:flex-grow-0 lg:text-left flex items-center">
+          <Link to="/home">
+            <img src="/img/logo.png" alt="Icono" className="h-24 w-32 mr-4 lg:h-28 lg:w-36 cursor-pointer" />
           </Link>
+          {/*<span className="text-lg sm:text-2xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
+            UESQuest
+          </span> */}
         </div>
 
         {/* Navegación */}

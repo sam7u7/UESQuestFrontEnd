@@ -183,74 +183,77 @@ function RegistroUsuarioNuevoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card title={editingUser ? 'Editar Usuario' : 'Registrar Usuario'}>
-        {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+   <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+  <div className="w-full max-w-3xl">
+    <h1 className="text-2xl font-bold mb-6 text-center">Mi Usuario</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-          <InputField label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} disabled={isLoading || !isEditing} required />
-          <InputField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} disabled={isLoading || !isEditing} required />
-          <InputField label="Teléfono" name="telefono" value={formData.telefono} onChange={handleChange} disabled={isLoading || !isEditing} required />
-          <InputField label="Correo Electrónico" type="email" name="correo" value={formData.correo} onChange={handleChange} disabled={isLoading || !isEditing} required />
+    <Card title={editingUser ? 'Editar Usuario' : 'Registrar Usuario'}>
+      {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-          {!editingUser && (
-            <InputField label="Contraseña" type="password" name="password" value={formData.password} onChange={handleChange} disabled={isLoading} required />
-          )}
+      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <InputField label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} disabled={isLoading || !isEditing} required />
+        <InputField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} disabled={isLoading || !isEditing} required />
+        <InputField label="Teléfono" name="telefono" value={formData.telefono} onChange={handleChange} disabled={isLoading || !isEditing} required />
+        <InputField label="Correo Electrónico" type="email" name="correo" value={formData.correo} onChange={handleChange} disabled={isLoading || !isEditing} required />
 
-          {/* Botones para NUEVO USUARIO */}
-          {!editingUser && (
-            <Button type="submit" disabled={isLoading}>
-              Registrar
-            </Button>
-          )}
+        {!editingUser && (
+          <InputField label="Contraseña" type="password" name="password" value={formData.password} onChange={handleChange} disabled={isLoading} required />
+        )}
 
-          {/* Botones para USUARIO EXISTENTE */}
-          {editingUser && !isEditing && (
-            <Button type="button" onClick={handleEditToggle}>
-              Editar
-            </Button>
-          )}
+        {!editingUser && (
+          <Button type="submit" disabled={isLoading}>
+            Registrar
+          </Button>
+        )}
 
-          {editingUser && isEditing && (
-            <>
-              <div className="flex flex-wrap gap-2">
-                {!changePasswordMode && (
-                  <>
-                    <Button type="button" onClick={toggleChangePassword}>
-                      Cambiar contraseña
+        {editingUser && !isEditing && (
+          <Button type="button" onClick={handleEditToggle}>
+            Editar
+          </Button>
+        )}
+
+        {editingUser && isEditing && (
+          <>
+            <div className="flex flex-wrap gap-2">
+              {!changePasswordMode && (
+                <>
+                  <Button type="button" onClick={toggleChangePassword}>
+                    Cambiar contraseña
+                  </Button>
+                  <Button type="button" onClick={handleCancelEdit} color="red">
+                    Cancelar
+                  </Button>
+                  {isFormModified() && (
+                    <Button type="submit" disabled={isLoading}>
+                      Guardar cambios
                     </Button>
-                    <Button type="button" onClick={handleCancelEdit} color="red">
-                      Cancelar
-                    </Button>
-                    {isFormModified() && (
-                      <Button type="submit" disabled={isLoading}>
-                        Guardar cambios
-                      </Button>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {changePasswordMode && (
-                <div className="mt-4 p-4 border rounded bg-white">
-                  <InputField label="Contraseña actual" type="password" name="currentPassword" value={formData.currentPassword} onChange={handleChange} disabled={isLoading} required />
-                  <InputField label="Nueva contraseña" type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} disabled={isLoading} required />
-                  <InputField label="Confirmar nueva contraseña" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} disabled={isLoading} required />
-                  <div className="flex gap-2 mt-2">
-                    <Button type="button" onClick={handlePasswordChange} disabled={isLoading}>
-                      Actualizar Contraseña
-                    </Button>
-                    <Button type="button" onClick={toggleChangePassword} color="gray">
-                      Cancelar cambio
-                    </Button>
-                  </div>
-                </div>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </form>
-      </Card>
-    </div>
+            </div>
+
+            {changePasswordMode && (
+              <div className="mt-4 p-4 border rounded bg-white">
+                <InputField label="Contraseña actual" type="password" name="currentPassword" value={formData.currentPassword} onChange={handleChange} disabled={isLoading} required />
+                <InputField label="Nueva contraseña" type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} disabled={isLoading} required />
+                <InputField label="Confirmar nueva contraseña" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} disabled={isLoading} required />
+                <div className="flex gap-2 mt-2">
+                  <Button type="button" onClick={handlePasswordChange} disabled={isLoading}>
+                    Actualizar Contraseña
+                  </Button>
+                  <Button type="button" onClick={toggleChangePassword} color="gray">
+                    Cancelar cambio
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </form>
+    </Card>
+  </div>
+</div>
+
   );
 }
 

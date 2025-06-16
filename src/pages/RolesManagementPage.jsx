@@ -117,56 +117,61 @@ function RolesManagementPage() {
   }, [roles, searchTerm]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card title="Gestión de Roles">
-        {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+    <div className="min-h-screen bg-gray-100 p-6 pt-24">
+  <h1 className="text-2xl font-bold mb-6 text-center">Gestión de Roles</h1>
 
-        <form onSubmit={handleSubmit}>
-          <InputField
-            label={editRole ? "Editar Nombre del Rol" : "Nuevo Nombre del Rol"}
-            type="text"
-            value={newRoleName}
-            onChange={(e) => setNewRoleName(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-          <Button type="submit" variant="primary" disabled={isLoading}>
-            {editRole ? 'Actualizar Rol' : 'Crear Rol'}
-          </Button>
-        </form>
+  <div className="flex items-center justify-center">
+    <Card>
+      {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
+      <form onSubmit={handleSubmit}>
         <InputField
-          label="Buscar Rol"
+          label={editRole ? "Editar Nombre del Rol" : "Nuevo Nombre del Rol"}
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={newRoleName}
+          onChange={(e) => setNewRoleName(e.target.value)}
+          required
+          disabled={isLoading}
         />
+        <Button type="submit" variant="primary" disabled={isLoading}>
+          {editRole ? 'Actualizar Rol' : 'Crear Rol'}
+        </Button>
+      </form>
 
-        {!isLoading && filteredRoles.length === 0 ? (
-          <p>No hay roles disponibles.</p>
-        ) : (
-          <table className="w-full border-collapse mt-4">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border p-2 text-left font-normal text-gray-700">Nombre</th>
-                <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
+      <InputField
+        label="Buscar Rol"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      {!isLoading && filteredRoles.length === 0 ? (
+        <p>No hay roles disponibles.</p>
+      ) : (
+        <table className="w-full border-collapse mt-4">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border p-2 text-left font-normal text-gray-700">Nombre</th>
+              <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRoles.map(role => (
+              <tr key={role.id} className="hover:bg-gray-50 border-t">
+                <td className="border p-2">{role.nombre_rol}</td>
+                <td className="border p-2 space-x-2">
+                  <Button onClick={() => handleEdit(role)}>Editar</Button>
+                  <Button onClick={() => handleDelete(role.id)}>Eliminar</Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredRoles.map(role => (
-                <tr key={role.id} className="hover:bg-gray-50 border-t">
-                  <td className="border p-2">{role.nombre_rol}</td>
-                  <td className="border p-2 space-x-2">
-                    <Button onClick={() => handleEdit(role)}>Editar</Button>
-                    <Button onClick={() => handleDelete(role.id)}>Eliminar</Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </Card>
-    </div>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </Card>
+  </div>
+</div>
+
   );
 }
 

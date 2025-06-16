@@ -155,97 +155,102 @@ function GrupoUsuarioPage() {
   }, [grupoUsuarios, grupos, usuarios, searchTerm]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card title="Gestión de Grupo - Usuario">
-        {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+    <div className="min-h-screen bg-gray-100 pt-24 flex flex-col items-center justify-center p-4">
+  <h1 className="text-2xl font-bold mb-6 text-center">Grupo del Usuario</h1>
 
-        <form onSubmit={handleSubmit} className="mb-4 space-y-4">
-          <div>
-            <label htmlFor="grupoMeta" className="block font-medium mb-1">Grupo Meta</label>
-            <select
-              id="grupoMeta"
-              value={grupoMetaId}
-              onChange={(e) => setGrupoMetaId(e.target.value)}
-              disabled={isLoading}
-              required
-              className="w-full border rounded p-2"
-            >
-              <option value="">-- Seleccione un Grupo --</option>
-              {grupos.map((grupo) => (
-                <option key={grupo.id} value={grupo.id}>
-                  {grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo}
-                </option>
-              ))}
-            </select>
-          </div>
+  <Card title="Gestión de Grupo - Usuario" className="w-full max-w-4xl">
+    {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-          <div>
-            <label htmlFor="usuario" className="block font-medium mb-1">Usuario</label>
-            <select
-              id="usuario"
-              value={usuarioId}
-              onChange={(e) => setUsuarioId(e.target.value)}
-              disabled={isLoading}
-              required
-              className="w-full border rounded p-2"
-            >
-              <option value="">-- Seleccione un Usuario --</option>
-              {usuarios.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.nombre + ' ' + user.apellido}
-                </option>
-              ))}
-            </select>
-          </div>
+    <form onSubmit={handleSubmit} className="mb-4 space-y-4">
+      <div>
+        <label htmlFor="grupoMeta" className="block font-medium mb-1">Grupo Meta</label>
+        <select
+          id="grupoMeta"
+          value={grupoMetaId}
+          onChange={(e) => setGrupoMetaId(e.target.value)}
+          disabled={isLoading}
+          required
+          className="w-full border rounded p-2"
+        >
+          <option value="">-- Seleccione un Grupo --</option>
+          {grupos.map((grupo) => (
+            <option key={grupo.id} value={grupo.id}>
+              {grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo}
+            </option>
+          ))}
+        </select>
+      </div>
 
-          <Button type="submit" variant="primary" disabled={isLoading}>
-            {editGrupoUsuario ? 'Actualizar Relación' : 'Asignar Usuario'}
-          </Button>
-        </form>
+      <div>
+        <label htmlFor="usuario" className="block font-medium mb-1">Usuario</label>
+        <select
+          id="usuario"
+          value={usuarioId}
+          onChange={(e) => setUsuarioId(e.target.value)}
+          disabled={isLoading}
+          required
+          className="w-full border rounded p-2"
+        >
+          <option value="">-- Seleccione un Usuario --</option>
+          {usuarios.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.nombre + ' ' + user.apellido}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        <InputField
-          label="Buscar Grupo o Usuario"
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="flex justify-end">
+        <Button type="submit" size="sm" variant="primary" disabled={isLoading}>
+          {editGrupoUsuario ? 'Actualizar Relación' : 'Asignar Usuario'}
+        </Button>
+      </div>
+    </form>
 
-        {!isLoading && filteredGrupoUsuarios.length === 0 ? (
-          <p>No hay relaciones disponibles.</p>
-        ) : (
-          <table className="w-full border-collapse mt-4">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="border p-2 text-left font-normal text-gray-700">Grupo Meta</th>
-                  <th className="border p-2 text-left font-normal text-gray-700">Usuario</th>
-                  <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredGrupoUsuarios.map((item) => {
-                  const grupo = grupos.find(g => g.id === item.grupo_id);
-                  const usuario = usuarios.find(u => u.id === item.usuario_id);
+    <InputField
+      label="Buscar Grupo o Usuario"
+      type="text"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
 
-                  return (
-                    <tr key={item.id} className="hover:bg-gray-50 border-t">
-                      <td className="border p-2">
-                        {grupo ? grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo : 'N/D'}
-                      </td>
-                      <td className="border p-2">
-                        {usuario ? usuario.nombre + ' ' + usuario.apellido : 'N/D'}
-                      </td>
-                      <td className="border p-2 space-x-2">
-                        <Button onClick={() => handleEdit(item)}>Editar</Button>
-                        <Button onClick={() => handleDelete(item.id)}>Eliminar</Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-        )}
-      </Card>
-    </div>
+    {!isLoading && filteredGrupoUsuarios.length === 0 ? (
+      <p className="mt-4 text-gray-600">No hay relaciones disponibles.</p>
+    ) : (
+      <table className="w-full border-collapse mt-4 text-sm sm:text-base">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="border p-2 text-left font-normal text-gray-700">Grupo Meta</th>
+            <th className="border p-2 text-left font-normal text-gray-700">Usuario</th>
+            <th className="border p-2 text-left font-normal text-gray-700">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredGrupoUsuarios.map((item) => {
+            const grupo = grupos.find(g => g.id === item.grupo_id);
+            const usuario = usuarios.find(u => u.id === item.usuario_id);
+
+            return (
+              <tr key={item.id} className="hover:bg-gray-50 border-t">
+                <td className="border p-2">
+                  {grupo ? grupo.nombre_grupo + ' - ' + grupo.descripcion_grupo : 'N/D'}
+                </td>
+                <td className="border p-2">
+                  {usuario ? usuario.nombre + ' ' + usuario.apellido : 'N/D'}
+                </td>
+                <td className="border p-2 space-x-2">
+                  <Button size="sm" onClick={() => handleEdit(item)}>Editar</Button>
+                  <Button size="sm" variant="danger" onClick={() => handleDelete(item.id)}>Eliminar</Button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    )}
+  </Card>
+</div>
+
   );
 }
 
