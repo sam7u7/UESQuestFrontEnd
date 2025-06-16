@@ -98,6 +98,7 @@ function Sidebar({ isOpen, onClose }) {
                 <ul className="ml-2">
                   {/* Solo visible para 'admin' */}
                   {hasRole('admin') && <MenuItem to="/crear-encuesta" label="Crear Encuesta" />}
+                  {hasRole('admin') && <MenuItem to="/mis-encuestas" label="Gestion Encuestas" />}
                   {/* Visible para 'admin' y 'usuario' */}
                   {(hasRole('admin') || hasRole('usuario')) && <MenuItem to="/encuestas/diponibles" label="Encuestas Disponibles" />}
                 </ul>
