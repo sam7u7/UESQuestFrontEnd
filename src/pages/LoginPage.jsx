@@ -101,6 +101,13 @@ export default function Login() {
           </button>
           <button
             type="button"
+            onClick={() => navigate('/usuario-nuevo')}
+            className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors rounded-md mt-4"
+          >
+            ¿No tienes cuenta? Regístrate aquí
+          </button>
+          <button
+            type="button"
             onClick={() => setShowForgotPasswordForm(true)}
             className="w-full text-sm text-gray-600 hover:text-gray-800 mt-2 rounded-md"
           >

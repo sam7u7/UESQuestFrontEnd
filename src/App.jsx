@@ -42,7 +42,7 @@ import LineChartView from './pages/LineChartView.jsx';
 import QuienesSomosPage from './pages/QuienesSomosPage.jsx';
 
 import PublicLayout from './layouts/PublicLayout.jsx';
-
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -77,6 +77,10 @@ function App() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  const location = useLocation();
+  const publicRoutes = ['/login', '/usuario-nuevo', '/unauthorized'];
+
+  const isPublicRoute = publicRoutes.includes(location.pathname);
 
   return (
     <AuthProvider>
@@ -86,7 +90,9 @@ function App() {
       <div className="relative"> {/* Quitamos 'overflow-hidden' */}
       {/* Opcional: <div className="relative overflow-x-hidden"> */}
         {/* Sidebar: Posicionamiento fijo, siempre visible pero con transformaciones */}
-        <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+        {!isPublicRoute && (
+          <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+        )}
 
         {/* Contenedor principal que se desplaza: Incluye Header, main y footer */}
         <div
@@ -98,7 +104,9 @@ function App() {
           `}
         >
           
-          <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+          
+            <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+          
 
 
           {/* Contenido de la página */}
@@ -126,9 +134,9 @@ function App() {
               {/* ============================================================== */}
               <Route path="/home" element={<HomePage />} />
               <Route path="/quienes-somos" element={<QuienesSomosPage />} />
-              <Route path="/login" element={<Login />} />
+              
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
-              <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />  
+              
                 {/*rutas para graficos  */}
                 <Route path='/graficaPie/:id' element={<PieChartView/>}/>
                 <Route path='/graficaLine/:id' element={<LineChartView/>}/>

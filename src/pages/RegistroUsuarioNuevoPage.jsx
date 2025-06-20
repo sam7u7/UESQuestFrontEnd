@@ -37,8 +37,16 @@ function RegistroUsuarioNuevoPage() {
   }, []);
 
   const fetchUsuarioActual = async () => {
-    setIsLoading(true);
-    try {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    // No hay token, no intentes cargar usuario
+    setEditingUser(null);
+    setIsEditing(true);
+    return;
+  }
+
+  setIsLoading(true);
+  try {
       const response = await axiosClient.get('/api/usuarios/me', getAuthHeader());
       const usuario = response.data;
       const initialData = {
