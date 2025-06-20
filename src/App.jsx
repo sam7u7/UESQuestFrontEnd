@@ -40,6 +40,8 @@ import LineChartView from './pages/LineChartView.jsx';
 
 import QuienesSomosPage from './pages/QuienesSomosPage.jsx';
 
+import PublicLayout from './layouts/PublicLayout.jsx';
+
 
 
 // ==============================================================
@@ -52,7 +54,7 @@ const HomePage = () => (
       Tu plataforma para crear encuestas y gestionar roles.
     </p>
     <div className="h-[1000px] bg-gray-50 mt-10 flex items-center justify-center text-gray-400">
-      Mucho contenido de ejemplo para hacer scroll...
+      
     </div>
   </div>
 );
@@ -99,6 +101,23 @@ function App() {
           {/* Contenido de la página */}
           <main className="pt-20"> {/* pt-20 para dejar espacio al Header */}
             <Routes>
+
+                          <Route
+                path="/login"
+                element={
+                  <PublicLayout>
+                    <Login />
+                  </PublicLayout>
+                }
+              />
+              <Route
+                path="/usuario-nuevo"
+                element={
+                  <PublicLayout>
+                    <RegistroUsuarioNuevoPage />
+                  </PublicLayout>
+                }
+              />
               {/* ============================================================== */}
               {/* Rutas Públicas (accesibles por todos, incluso no logueados) */}
               {/* ============================================================== */}
@@ -106,6 +125,7 @@ function App() {
               <Route path="/quienes-somos" element={<QuienesSomosPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />  
                 {/*rutas para graficos  */}
                 <Route path='/graficaPie/:id' element={<PieChartView/>}/>
                 <Route path='/graficaLine/:id' element={<LineChartView/>}/>
@@ -115,7 +135,7 @@ function App() {
               {/* ============================================================== */}
               <Route element={<ProtectedRoute />}>
                                              
-                <Route path="/usuario-nuevo" element={<RegistroUsuarioNuevoPage />} />  
+                
                 <Route path="/pregunta-base" element={<PreguntaBaseManagementPage />} />              
                 <Route path="/encuestas/:id/preguntas" element={<PreguntasEncuesta />} />
                 <Route path='/encuestas/diponibles' element={<EncuestasDisponibles/>}/>

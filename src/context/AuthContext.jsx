@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axiosClient.get('/api/me', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setUser(response.data); // Asume que la respuesta es el objeto de usuario
+      setUser(response.data); 
       setIsAuthenticated(true);
       return response.data; // Retorna el usuario para verificar roles
     } catch (error) {
@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }) => {
     if (userData) {
       setUser(userData);
     } else {
-      // Opcional: Si el login solo devuelve el token, podrías hacer una llamada a /api/user aquí
+      
       await fetchUser(token);
     }
-    // navigate('/dashboard'); // Redirige a la página principal después del login
+    navigate('/home'); // Redirige a la página principal después del login
   };
 
   const logout = () => {
