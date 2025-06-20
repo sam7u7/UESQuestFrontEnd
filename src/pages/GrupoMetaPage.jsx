@@ -100,69 +100,74 @@ function GrupoMeta() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <Card title="Gestión de Grupo Meta" className="w-full max-w-4xl">
-        {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+   <div className="min-h-screen bg-gray-100 pt-24 flex flex-col items-center justify-center p-4">
+  <h1 className="text-2xl font-bold mb-6 text-center">Grupo Meta</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField
-            label="Nombre del Grupo"
-            value={nombreGrupo}
-            onChange={(e) => setNombreGrupo(e.target.value)}
-            required
-          />
-          <InputField
-            label="Descripción del Grupo"
-            value={descripcionGrupo}
-            onChange={(e) => setDescripcionGrupo(e.target.value)}
-          />
-          <Button type="submit" variant="primary" className="w-full sm:w-auto">
-            {editId ? 'Actualizar' : 'Crear'}
-          </Button>
-        </form>
+  <Card title="Gestión de Grupo Meta" className="w-full max-w-4xl">
+    {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-        <div className="mt-6">
-          <InputField
-            label="Buscar Grupo por Nombre"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar..."
-          />
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <InputField
+        label="Nombre del Grupo"
+        value={nombreGrupo}
+        onChange={(e) => setNombreGrupo(e.target.value)}
+        required
+      />
+      <InputField
+        label="Descripción del Grupo"
+        value={descripcionGrupo}
+        onChange={(e) => setDescripcionGrupo(e.target.value)}
+      />
+      <div className="flex justify-end">
+        <Button size="sm" variant="primary" type="submit">
+          {editId ? 'Actualizar' : 'Crear'}
+        </Button>
+      </div>
+    </form>
 
-        <div className="mt-6 w-full overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded shadow-sm text-sm sm:text-base">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left px-3 py-2 border font-normal text-gray-700">Nombre del Grupo</th>
-                <th className="text-left px-3 py-2 border font-normal text-gray-700">Descripción</th>
-                <th className="text-left px-3 py-2 border font-normal text-gray-700">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {gruposFiltrados.length > 0 ? (
-                gruposFiltrados.map((grupo) => (
-                  <tr key={grupo.id} className="border-t hover:bg-gray-50">
-                    <td className="px-3 py-2 border break-words max-w-xs">{grupo.nombre_grupo}</td>
-                    <td className="px-3 py-2 border break-words max-w-xs">{grupo.descripcion_grupo}</td>
-                    <td className="px-3 py-2 border space-x-2">
-                      <Button size="sm" onClick={() => handleEdit(grupo)}>Editar</Button>
-                      <Button size="sm" variant="danger" onClick={() => handleDelete(grupo.id)}>Eliminar</Button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="text-center px-3 py-4 text-gray-500">
-                    No se encontraron grupos.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+    <div className="mt-6">
+      <InputField
+        label="Buscar Grupo por Nombre"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Buscar..."
+      />
     </div>
+
+    <div className="mt-6 w-full overflow-x-auto">
+      <table className="min-w-full bg-white border border-gray-200 rounded shadow-sm text-sm sm:text-base">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="text-left px-3 py-2 border font-normal text-gray-700">Nombre del Grupo</th>
+            <th className="text-left px-3 py-2 border font-normal text-gray-700">Descripción</th>
+            <th className="text-left px-3 py-2 border font-normal text-gray-700">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {gruposFiltrados.length > 0 ? (
+            gruposFiltrados.map((grupo) => (
+              <tr key={grupo.id} className="border-t hover:bg-gray-50">
+                <td className="px-3 py-2 border break-words max-w-xs">{grupo.nombre_grupo}</td>
+                <td className="px-3 py-2 border break-words max-w-xs">{grupo.descripcion_grupo}</td>
+                <td className="px-3 py-2 border space-x-2">
+                  <Button size="sm" onClick={() => handleEdit(grupo)}>Editar</Button>
+                  <Button size="sm" variant="danger" onClick={() => handleDelete(grupo.id)}>Eliminar</Button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className="text-center px-3 py-4 text-gray-500">
+                No se encontraron grupos.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</div>
+
   );
 }
 

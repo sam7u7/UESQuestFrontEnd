@@ -162,60 +162,95 @@ function UserManagementPage() {
 
     // Maneja los cambios en los campos del formulario
     const handleChange = (e) => {
-        const { name, value } = e.target;
+    const { name, value } = e.target;
+
+    if (name === "password") {
+        // Expresión regular para validar:
+        // - Que la contraseña inicie con una letra
+        // - Que tenga al menos una mayúscula y una minúscula
+        // - Que contenga al menos un símbolo especial
+        const passwordRegex = /^[A-Za-z][A-Za-z0-9!@#$%^&*()_+=-]{7,}$/;
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+        const hasSpecialChar = /[!@#$%^&*()_+=-]/.test(value);
+
+            if (!passwordRegex.test(value) || !hasUpperCase || !hasLowerCase || !hasSpecialChar) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: "La contraseña debe iniciar con una letra, contener mayúsculas, minúsculas y un símbolo especial.",
+                }));
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: undefined, // Borra el error si es válida
+                }));
+            }
+        }
+
         setFormData({ ...formData, [name]: value });
-        // Limpiar errores para el campo actual al escribir
-        setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
         setAlert({ message: '', type: '' }); // Limpiar alertas al cambiar el formulario
-    };
+        };
 
     // Maneja el envío del formulario (crear o actualizar usuario)
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setErrors({}); // Limpiar errores anteriores
-        setAlert({ message: '', type: '' }); // Limpiar mensajes anteriores
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
+    setAlert({ message: '', type: '' });
 
-        try {
-            if (formData.id) {
-                // Lógica para actualizar usuario
-                const response = await axiosClient.put(`/api/usuarios/${formData.id}`, formData, getAuthHeader()); // Ajusta esta URL
-                setUsers(users.map(user => (user.id === formData.id ? response.data : user)));
-                setAlert({ message: 'Usuario actualizado exitosamente.', type: 'success' });
-            } else {
-                // Lógica para crear nuevo usuario
-                const response = await axiosClient.post('/api/usuarios', formData, getAuthHeader()); // Ajusta esta URL
-                setUsers([...users, response.data]);
-                setAlert({ message: 'Usuario creado exitosamente.', type: 'success' });
-            }
-            // Resetear el formulario después de la operación exitosa
-            setFormData({
-                id: null,
-                id_rol: '',
-                nombre: '',
-                apellido: '',
-                telefono: '',
-                correo: '',
-                password: '',
-                created_by: loggedInUser ? loggedInUser.correo : '', // Mantener placeholder, en un entorno real sería dinámico
-            });
-        } catch (error) {
-            console.error('Error al guardar usuario:', error);
-            if (error.response && error.response.status === 400) {
-                // Errores de validación del backend (ej. campos requeridos, formato incorrecto)
-                setErrors(error.response.data);
-                setAlert({ message: 'Errores de validación. Por favor, revisa los campos.', type: 'error' });
-            } else if (error.response && error.response.status === 422) {
-                // Errores específicos como correo ya registrado (si el backend lo envía así)
-                setErrors(error.response.data);
-                setAlert({ message: error.response.data.message || 'El correo ya se encuentra registrado.', type: 'error' });
-            } else {
-                setAlert({ message: 'Error al guardar el usuario. Inténtalo de nuevo.', type: 'error' });
-            }
-        } finally {
-            setIsLoading(false);
+    // Validación de contraseña antes de enviar la solicitud
+    const passwordRegex = /^[A-Za-z][A-Za-z0-9!@#$%^&*()_+=-]{7,}$/;
+    const hasUpperCase = /[A-Z]/.test(formData.password);
+    const hasLowerCase = /[a-z]/.test(formData.password);
+    const hasSpecialChar = /[!@#$%^&*()_+=-]/.test(formData.password);
+
+    if (!passwordRegex.test(formData.password) || !hasUpperCase || !hasLowerCase || !hasSpecialChar) {
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: "La contraseña debe iniciar con una letra, contener mayúsculas, minúsculas y un símbolo especial.",
+        }));
+        setAlert({ message: "La contraseña debe cumplir con lo siguiente:\n- Iniciar con una letra\n- Contener al menos una mayúscula\n- Contener al menos una minúscula\n- Incluir al menos un símbolo especial (!@#$%^&*()_+=-)\n - Longitud minima 8 caracteres", type: 'error' });
+        setIsLoading(false);
+        return; // Detiene la ejecución si la contraseña no es válida
+    }
+
+    try {
+        if (formData.id) {
+            const response = await axiosClient.put(`/api/usuarios/${formData.id}`, formData, getAuthHeader());
+            setUsers(users.map(user => (user.id === formData.id ? response.data : user)));
+            setAlert({ message: 'Usuario actualizado exitosamente.', type: 'success' });
+        } else {
+            const response = await axiosClient.post('/api/usuarios', formData, getAuthHeader());
+            setUsers([...users, response.data]);
+            setAlert({ message: 'Usuario creado exitosamente.', type: 'success' });
         }
-    };
+
+        setFormData({
+            id: null,
+            id_rol: '',
+            nombre: '',
+            apellido: '',
+            telefono: '',
+            correo: '',
+            password: '',
+            created_by: loggedInUser ? loggedInUser.correo : '',
+        });
+    } catch (error) {
+        console.error('Error al guardar usuario:', error);
+        if (error.response && error.response.status === 400) {
+            setErrors(error.response.data);
+            setAlert({ message: 'Errores de validación. Por favor, revisa los campos.', type: 'error' });
+        } else if (error.response && error.response.status === 422) {
+            setErrors(error.response.data);
+            setAlert({ message: error.response.data.message || 'El correo ya se encuentra registrado.', type: 'error' });
+        } else {
+            setAlert({ message: 'Error al guardar el usuario. Inténtalo de nuevo.', type: 'error' });
+        }
+    } finally {
+        setIsLoading(false);
+    }
+};
+
 
     // Carga los datos de un usuario en el formulario para edición
     const handleEdit = (user) => {
@@ -266,183 +301,96 @@ function UserManagementPage() {
     }, [users, searchTerm, roles]);
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-            <Card title="Gestión de Usuarios">
-                {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+  <Card title="Gestión de Usuarios" className="w-full max-w-lg md:max-w-2xl">
+    {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800">{formData.id ? 'Editar Usuario' : 'Crear Nuevo Usuario'}</h2>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {/* Campo de Rol */}
-                    <div>
-                        <label htmlFor="id_rol" className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
-                        <select
-                            id="id_rol"
-                            name="id_rol"
-                            value={formData.id_rol}
-                            onChange={handleChange}
-                            className={`mt-1 block w-full p-3 border ${errors.id_rol ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 bg-gray-50 text-gray-900`}
-                            required
-                            disabled={isLoading}
-                        >
-                            <option value="">Selecciona un rol</option>
-                            
-                            {Array.isArray(roles) && roles.map(role => (
-                                <option key={role.id} value={role.id}>{role.nombre_rol}</option> 
-                            ))}
-                        </select>
-                        {errors.id_rol && <p className="mt-1 text-sm text-red-600">{errors.id_rol}</p>}
-                    </div>
+    <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800 text-center">
+      {formData.id ? 'Editar Usuario' : 'Crear Nuevo Usuario'}
+    </h2>
 
-                    {/* Campo de Nombre */}
-                    <InputField
-                        label="Nombre"
-                        type="text"
-                        name="nombre"
-                        value={formData.nombre}
-                        onChange={handleChange}
-                        required
-                        disabled={isLoading}
-                        error={errors.nombre}
-                    />
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Campo de Rol */}
+      <div>
+        <label htmlFor="id_rol" className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+        <select
+          id="id_rol"
+          name="id_rol"
+          value={formData.id_rol}
+          onChange={handleChange}
+          className={`block w-full p-2 border ${errors.id_rol ? 'border-red-500' : 'border-gray-300'} rounded-md bg-gray-50 text-gray-900`}
+          required
+          disabled={isLoading}
+        >
+          <option value="">Selecciona un rol</option>
+          {roles.map(role => (
+            <option key={role.id} value={role.id}>{role.nombre_rol}</option> 
+          ))}
+        </select>
+        {errors.id_rol && <p className="text-xs text-red-600">{errors.id_rol}</p>}
+      </div>
 
-                    {/* Campo de Apellido */}
-                    <InputField
-                        label="Apellido"
-                        type="text"
-                        name="apellido"
-                        value={formData.apellido}
-                        onChange={handleChange}
-                        required
-                        disabled={isLoading}
-                        error={errors.apellido}
-                    />
+      {/* Campos de entrada */}
+      <InputField label="Nombre" type="text" name="nombre" value={formData.nombre} onChange={handleChange} required disabled={isLoading} error={errors.nombre} />
+      <InputField label="Apellido" type="text" name="apellido" value={formData.apellido} onChange={handleChange} required disabled={isLoading} error={errors.apellido} />
+      <InputField label="Teléfono" type="text" name="telefono" value={formData.telefono} onChange={handleChange} disabled={isLoading} error={errors.telefono} />
+      <InputField label="Correo" type="email" name="correo" value={formData.correo} onChange={handleChange} required disabled={isLoading} error={errors.correo} />
+      <InputField label="Contraseña" type="password" name="password" value={formData.password} onChange={handleChange} required={!formData.id} disabled={isLoading} error={errors.password} />
 
-                    {/* Campo de Teléfono */}
-                    <InputField
-                        label="Teléfono"
-                        type="text"
-                        name="telefono"
-                        value={formData.telefono}
-                        onChange={handleChange}
-                        disabled={isLoading}
-                        error={errors.telefono}
-                    />
-
-                    {/* Campo de Correo */}
-                    <InputField
-                        label="Correo"
-                        type="email"
-                        name="correo"
-                        value={formData.correo}
-                        onChange={handleChange}
-                        required
-                        disabled={isLoading}
-                        error={errors.correo}
-                    />
-
-                    {/* Campo de Contraseña */}
-                    <InputField
-                        label="Contraseña"
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required={!formData.id} // Requerida solo al crear
-                        disabled={isLoading}
-                        error={errors.password}
-                    />
-
-                    {/* Botones de acción */}
-                    <div className="md:col-span-2 flex justify-end space-x-4 mt-4">
-                        <Button type="submit" variant="primary" disabled={isLoading}>
-                            {isLoading ? (
-                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            ) : (
-                                formData.id ? 'Actualizar Usuario' : 'Crear Usuario'
-                            )}
-                        </Button>
-                        {formData.id && (
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={() => {
-                                    setFormData({
-                                        id: null,
-                                        id_rol: '',
-                                        nombre: '',
-                                        apellido: '',
-                                        telefono: '',
-                                        correo: '',
-                                        password: '',
-                                        created_by: loggedInUser ? loggedInUser.correo : '',
-                                    });
-                                    setErrors({});
-                                    setAlert({ message: '', type: '' });
-                                }}
-                                disabled={isLoading}
-                            >
-                                Cancelar
-                            </Button>
-                        )}
-                    </div>
-                </form>
-
-                <InputField
-                    label="Buscar Usuario"
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    disabled={isLoading}
-                />
-
-                {isLoading && filteredUsers.length === 0 ? (
-                    <p className="text-center text-gray-600 mt-4">Cargando usuarios...</p>
-                ) : filteredUsers.length === 0 ? (
-                    <p className="text-center text-gray-600 mt-4">No hay usuarios registrados que coincidan con la búsqueda.</p>
-                ) : (
-                    <div className="overflow-x-auto mt-6">
-                        <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Completo</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Creado Por</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredUsers.map((user) => (
-                                    <tr key={user.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                            {Array.isArray(roles) && roles.find(role => role.id === user.id_rol)?.nombre_rol || 'Desconocido'}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.nombre} {user.apellido}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.telefono}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.correo}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.created_by}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <Button onClick={() => handleEdit(user)} variant="tertiary" className="mr-2" disabled={isLoading}>
-                                                Editar
-                                            </Button>
-                                            <Button onClick={() => handleDelete(user.id)} variant="danger" disabled={isLoading}>
-                                                Eliminar
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </Card>
+      {/* Botones de acción */}
+      <div className="md:col-span-2 flex justify-end space-x-2 mt-4">
+        <Button type="submit" variant="primary" disabled={isLoading}>
+            {isLoading ? "Cargando..." : formData.id ? 'Actualizar Usuario' : 'Crear Usuario'}
+        </Button>
+        {formData.id && (
+            <Button type="button" variant="secondary" onClick={() => setFormData({ id: null, id_rol: '', nombre: '', apellido: '', telefono: '', correo: '', password: '' })} disabled={isLoading}>
+            Cancelar
+            </Button>
+        )}
         </div>
+    </form>
+
+    {/* Buscador y tabla responsiva */}
+    <InputField 
+    label="Buscar Usuario" 
+    type="text" 
+    value={searchTerm} 
+    onChange={(e) => setSearchTerm(e.target.value)} 
+    disabled={isLoading} 
+    className="w-full mt-4 border border-gray-400 rounded-md focus:ring-2 focus:ring-gray-500 focus:border-gray-600"
+    />
+
+    <div className="overflow-x-auto mt-4">
+      <table className="w-full min-w-max border border-gray-200 rounded-lg text-sm">
+        <thead className="bg-gray-50 text-xs sm:text-sm">
+          <tr>
+            <th className="px-2 sm:px-4 py-2">ID</th>
+            <th className="px-2 sm:px-4 py-2">Rol</th>
+            <th className="px-2 sm:px-4 py-2">Nombre</th>
+            <th className="px-2 sm:px-4 py-2">Teléfono</th>
+            <th className="px-2 sm:px-4 py-2">Correo</th>
+            <th className="px-2 sm:px-4 py-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {filteredUsers.map((user) => (
+            <tr key={user.id} className="text-xs sm:text-sm">
+              <td className="px-2 sm:px-4 py-2">{user.id}</td>
+              <td className="px-2 sm:px-4 py-2">{roles.find(role => role.id === user.id_rol)?.nombre_rol || 'Desconocido'}</td>
+              <td className="px-2 sm:px-4 py-2">{user.nombre} {user.apellido}</td>
+              <td className="px-2 sm:px-4 py-2">{user.telefono}</td>
+              <td className="px-2 sm:px-4 py-2">{user.correo}</td>
+              <td className="px-2 sm:px-4 py-2 flex flex-wrap justify-center gap-1">
+                <Button onClick={() => handleEdit(user)} variant="tertiary" disabled={isLoading}>Editar</Button>
+                <Button onClick={() => handleDelete(user.id)} variant="danger" disabled={isLoading}>Eliminar</Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</div>
     );
 }
 

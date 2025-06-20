@@ -145,81 +145,84 @@ function EstadoUsuariosPage() {
   }, [users, searchTerm, roles]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
-        <Card title="Gestión de Estado de Usuarios">
-          {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
+    <div className="min-h-screen bg-gray-100 pt-24 p-4 sm:p-6 lg:p-8">
+  <div className="max-w-7xl mx-auto">
+    <h1 className="text-2xl font-bold mb-6 text-center">Estado de Usuarios</h1>
 
-          <div className="mb-4">
-            <InputField
-              label="Buscar Usuario"
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              disabled={isLoading}
-              className="w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
+    <Card title="Gestión de Estado de Usuarios">
+      {alert.message && <AlertMessage message={alert.message} type={alert.type} />}
 
-          {isLoading && filteredUsers.length === 0 ? (
-            <p className="text-center text-gray-600 mt-4">Cargando usuarios...</p>
-          ) : filteredUsers.length === 0 ? (
-            <p className="text-center text-gray-600 mt-4">
-              No hay usuarios registrados que coincidan con la búsqueda.
-            </p>
-          ) : (
-            <div className="overflow-x-auto mt-6 shadow-md rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg text-xs sm:text-sm md:text-base">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">ID</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Rol</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Nombre</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Correo</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Estado</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Inhabilitado Desde</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {roles.find(role => role.id === user.id_rol)?.nombre_rol || 'Desconocido'}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">{user.nombre} {user.apellido}</td>
-                      <td className="px-4 py-2 whitespace-nowrap">{user.correo}</td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs font-semibold rounded-full ${user.deleted_at === null ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                          {user.deleted_at === null ? 'Activo' : 'Inactivo'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {user.deleted_at ? new Date(user.deleted_at).toLocaleDateString('es-SV') : ''}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        <button
-                            onClick={() => handleToggleUserStatus(user)}
-                            disabled={isLoading}
-                            className={`w-full sm:w-auto py-2 px-4 rounded-md font-semibold text-white transition duration-200 
-                                ${user.deleted_at === null 
-                                ? 'bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-300' 
-                                : 'bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-300'}
-                                ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            >
-                            {user.deleted_at === null ? 'Inhabilitar' : 'Rehabilitar'}
-                            </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Card>
+      <div className="mb-4">
+        <InputField
+          label="Buscar Usuario"
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          disabled={isLoading}
+          className="w-full border border-gray-300 rounded-md p-2"
+        />
       </div>
-    </div>
+
+      {isLoading && filteredUsers.length === 0 ? (
+        <p className="text-center text-gray-600 mt-4">Cargando usuarios...</p>
+      ) : filteredUsers.length === 0 ? (
+        <p className="text-center text-gray-600 mt-4">
+          No hay usuarios registrados que coincidan con la búsqueda.
+        </p>
+      ) : (
+        <div className="overflow-x-auto mt-6 shadow-md rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg text-xs sm:text-sm md:text-base">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">ID</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Rol</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Nombre</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Correo</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Estado</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Inhabilitado Desde</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredUsers.map((user) => (
+                <tr key={user.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    {roles.find(role => role.id === user.id_rol)?.nombre_rol || 'Desconocido'}
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap">{user.nombre} {user.apellido}</td>
+                  <td className="px-4 py-2 whitespace-nowrap">{user.correo}</td>
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs font-semibold rounded-full ${user.deleted_at === null ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {user.deleted_at === null ? 'Activo' : 'Inactivo'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    {user.deleted_at ? new Date(user.deleted_at).toLocaleDateString('es-SV') : ''}
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    <button
+                      onClick={() => handleToggleUserStatus(user)}
+                      disabled={isLoading}
+                      className={`w-full sm:w-auto py-2 px-4 rounded-md font-semibold text-white transition duration-200 
+                        ${user.deleted_at === null 
+                          ? 'bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-300' 
+                          : 'bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-300'}
+                        ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      {user.deleted_at === null ? 'Inhabilitar' : 'Rehabilitar'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </Card>
+  </div>
+</div>
+
   );
 }
 

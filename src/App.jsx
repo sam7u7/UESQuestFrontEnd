@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 // Importa los componentes de autenticación y protección
 import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
+import Bienvenida from './components/Bienvenida.jsx';
 
 // Importa tus componentes de página
 import RolesManagementPage from './pages/RolesManagementPage';
@@ -44,15 +45,17 @@ import PublicLayout from './layouts/PublicLayout.jsx';
 
 
 
+
 // ==============================================================
 // Componentes de ejemplo (están bien aquí, solo para ilustrar)
 // ==============================================================
 const HomePage = () => (
   <div className="text-center py-20">
     <h1 className="text-4xl font-bold mb-4">Bienvenido a UESQuest</h1>
-    <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-      Tu plataforma para crear encuestas y gestionar roles.
+    <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6"> {/* Agregué mb-6 */}
+      Tu plataforma para crear encuestas y gestionar roles. 
     </p>
+    <Bienvenida />
     <div className="h-[1000px] bg-gray-50 mt-10 flex items-center justify-center text-gray-400">
       
     </div>
